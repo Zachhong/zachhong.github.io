@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 900,  
+  "config": {
+    "background": "#cce5ff"
+  },
+  "layer": [
+    {
+      "mark": {"type": "geoshape", "stroke": "#ccc", "strokeWidth": 0.5},
+      "data": {"graticule": true}
+    },
+    {
+      "mark": {"type": "geoshape", "stroke": "black", "strokeWidth": 1},
+      "data": {
+        "url": "ne_10m_admin_1_states_provinces.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_10m_admin_1_states_provinces"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.postal",
+          "from": {
+            "data": {
+              "url": "week9data.csv",
+              "format": {"type": "csv"}
+            },
+            "key": "state",
+            "fields": ["Persons fully engaged (%)"]
+          }
+        }
+      ],
+      "projection": {
+        "type": "mercator",
+        "scale": 900,  
+        "center": [135, -25]  
+      },
+      "encoding": {
+        "color": {
+          "field": "Persons fully engaged (%)",
+          "type": "quantitative",
+          "scale": {"scheme": "blues"}
+        },
+        "tooltip": [
+          {"field": "properties.name", "type": "nominal", "title": "State"},
+          {"field": "Persons fully engaged (%)", "type": "quantitative", "title": "Engaged (%)"}
+        ]
+      }
+    }
+  ]
+}
