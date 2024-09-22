@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 600,
+  "height": 400,
+  "data": {
+    "url": "ne_10m_admin_1_states_provinces.json",
+    "format": {
+      "type": "topojson",
+      "feature": "ne_10m_admin_1_states_provinces"
+    }
+  },
+  "transform": [
+    {
+      "lookup": "properties.postal",
+      "from": {
+        "data": {
+          "url": "week9data.csv",
+          "format": {"type": "csv"}
+        },
+        "key": "state",
+        "fields": ["Persons fully engaged (%)"]
+      }
+    }
+  ],
+  "projection": {"type": "mercator"},
+  "mark": "geoshape",
+  "encoding": {
+    "color": {
+      "field": "Persons fully engaged (%)",
+      "type": "quantitative",
+      "scale": {"scheme": "blues"}
+    },
+    "tooltip": [
+      {"field": "properties.name", "type": "nominal", "title": "State"},
+      {"field": "Persons fully engaged (%)", "type": "quantitative", "title": "Engaged (%)"}
+    ]
+  }
+}
